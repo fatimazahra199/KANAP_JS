@@ -9,6 +9,7 @@ fetch(`http://localhost:3000/api/products/${productId}`)
         add_items(products)
     })
 
+const colors = document.querySelector('#colors')
 
 function add_items(products) {
 
@@ -29,7 +30,6 @@ function add_items(products) {
     let description = document.getElementById('description')
     description.innerHTML = products.description
 
-    let colors = document.querySelector('#colors')
 
     for (let i = 0; i < products.colors.length; i++) {
         const option = document.createElement('option')
@@ -44,40 +44,41 @@ function add_items(products) {
 
 const cart = JSON.parse(localStorage.getItem('cart')) || { items: [] };
 const btn = document.getElementById('addToCart')
-let quantity = parseInt(document.getElementById('quantity').value);
-console.log(quantity)
-let color = document.getElementById('colors').value;
-console.log(color)
 
-btn.addEventListener('click', (e)=>{
-    if( quantity == 0){
-        return alert('please fill quantity and color option fields')
+
+btn.addEventListener('click', (e) => {
+    let quantity = parseInt(document.getElementById('quantity').value);
+    console.log(quantity)
+    let color = document.getElementById('colors').value;
+    console.log(color)
+    if (!colors.value || quantity == 0) {
+        return alert('please fill quantity and option fields')
     }
 
 
-let cart_item = null;
-for (let i = 0; i < cart.items.length; i++) {
-    if (cart.items[i].id === productId) {
-        cart_item = cart.items[i];
-        break;
+    let cart_item = null;
+    for (let i = 0; i < cart.items.length; i++) {
+        if (cart.items[i].id === productId) {
+            cart_item = cart.items[i];
+            break;
+        }
     }
-}
 
-// if the product exists, update the quantity and color fields
-if (cart_item) {
-    cart_item.quantity += quantity;
-    cart_item.color = color;
-}
-// otherwise, create a new cart item object and add it to the items array
-else {
-    let new_cart_item = {
-        id: productId,
-        quantity: quantity,
-        color: color
-    };
-    cart.items.push(new_cart_item);
-}
+    // if the product exists, update the quantity and color fields
+    if (cart_item) {
+        cart_item.quantity += quantity;
+        cart_item.color = color;
+    }
+    // otherwise, create a new cart item object and add it to the items array
+    else {
+        let new_cart_item = {
+            id: productId,
+            quantity: quantity,
+            color: color
+        };
+        cart.items.push(new_cart_item);
+    }
 
-localStorage.setItem('cart', JSON.stringify(cart));
-console.log(cart)
+    localStorage.setItem('cart', JSON.stringify(cart));
+    console.log(cart)
 })
