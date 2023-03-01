@@ -51,8 +51,7 @@ btn.addEventListener('click', (e) => {
     console.log(quantity)
     let color = document.getElementById('colors').value;
     console.log(color)
-    // let price =  document.getElementById('price')
-    // console.log(price)
+    
     if (!colors.value || quantity == 0) {
         return alert('please fill quantity and option fields')
     }
