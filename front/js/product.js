@@ -55,10 +55,9 @@ btn.addEventListener('click', (e) => {
     if (!colors.value || quantity == 0) {
         return alert('please fill quantity and option fields')
     }
-    // else {
-    //     return alert("your product is in the cart")
-    // }
-    const priceElement = document.getElementById("price");
+    else {
+        
+        const priceElement = document.getElementById("price");
     const price = parseInt(priceElement.textContent);
     console.log(price);
 
@@ -89,4 +88,7 @@ btn.addEventListener('click', (e) => {
 
     localStorage.setItem('cart', JSON.stringify(cart));
     console.log(cart)
+    }
+    return alert("your product is in the cart")
+    
 })
