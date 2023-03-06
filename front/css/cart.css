@@ -141,18 +141,22 @@ h2 {
 	border: transparent;
 	cursor: pointer;
 }
-#firstNameErrorMsg, #lastNameErrorMsg {
+#firstNameErrorMsg, #lastNameErrorMsg, #emailErrorMsg, #addressErrorMsg, #cityErrorMsg {
 	display: none;
 	font-size: 0.8em;
   }
   
-#firstNameErrorMsg.visible {
+#firstNameErrorMsg.visible, #lastNameErrorMsg.visible, #emailErrorMsg.visible, #addressErrorMsg.visible, #cityErrorMsg.visible{
 	display: block;
   }
   
 input.invalid {
 	border: 1px solid red;
   }
+
+input.validate{
+	border: 1px solid green;
+}
 
 
 

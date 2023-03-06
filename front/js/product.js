@@ -63,9 +63,12 @@ btn.addEventListener('click', (e) => {
 
 
     let cart_item = null;
+    //starts a for loop that iterates through each item in the items array of the cart object.
     for (let i = 0; i < cart.items.length; i++) {
         if (cart.items[i].id === productId) {
+            //sets the cart_item variable to the current item in the loop, indicating that it has been found in the cart.
             cart_item = cart.items[i];
+            //exits the for loop, since the desired item has been found.
             break;
         }
     }
@@ -89,6 +92,6 @@ btn.addEventListener('click', (e) => {
     localStorage.setItem('cart', JSON.stringify(cart));
     console.log(cart)
     }
-    return alert("your product is in the cart")
+    return alert("your product has been added to the cart")
     
 })

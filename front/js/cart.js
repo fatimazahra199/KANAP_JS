@@ -45,6 +45,7 @@ function add_to_cart(product, item) {
   const quantityInput = document.getElementById(item.id);
   console.log(quantityInput);
   quantityInput.addEventListener("input", function () {
+
     modify_qte(item, quantityInput);
   });
 
@@ -69,14 +70,17 @@ function add_to_cart(product, item) {
       if (index !== -1) {
         cart.items.splice(index, 1);
       }
+
+      
       localStorage.setItem("cart", JSON.stringify(cart));
       totalQte.innerHTML = update_total(product, item);
     }
   );
   const submit = document.getElementById("order");
-    console.log(submit)
-  submit.addEventListener("click", function () {
-    validate()
+  console.log(submit);
+  submit.addEventListener("click", function (e) {
+    e.preventDefault();
+    validate();
   });
 }
 
@@ -87,31 +91,42 @@ function getAmount(product, item) {
 }
 
 function modify_qte(item, quantityInput) {
-  let new_qte = document.getElementsByClassName(".it_qte");
-
-  console.log("jj", new_qte);
+  // modify the quantity of the item
   const newQuantity = parseInt(quantityInput.value);
+  console.log("yes new", newQuantity);
 
+  //updates the quantity property of the item object with the new quantity entered by the user.
   item.quantity = newQuantity;
 
+  // calculate the new total price for all items in the cart
   total = cart.items.reduce((acc, curr) => {
     console.log("currq", curr.quantity);
     console.log("curpr", curr.price);
     return (acc += curr.quantity * curr.price);
   }, 0);
   console.log(total);
+
+  // update the total quantity displayed
   totalQte.innerHTML = total;
+
+  // save the updated cart to localStorage
   localStorage.setItem("cart", JSON.stringify(cart));
   console.log(cart);
 }
 
 function update_total(product, item) {
+  // Select all the cart items
   const cart_prod = document.querySelectorAll(".cart__item");
   console.log(cart_prod.length);
 
+  // Select the total price element
   const p_total = document.querySelector("#totalPrice");
   console.log(p_total);
+
+  // Initialize a total variable to keep track of the total price
   let total = 0;
+
+  // Loop through each cart item and calculate the total price
   for (let i = 0; i < cart_prod.length; i++) {
     let prod = cart_prod[i];
     let price_prod = prod.getElementsByClassName("product-price")[0];
@@ -123,18 +138,14 @@ function update_total(product, item) {
     console.log(total);
     console.log(cart);
   }
+
+  // Return the total price of all items in the cart
   return total;
 }
 
-function validate(){
-
+function validate() {
   const firstNameField = document.getElementById("firstName");
   let valid = true;
-  console.log(firstNameField)
-  // const lastNameField = document.getElementById("lastName");
-
-
-  
 
   if (!firstNameField.value) {
     const nameError = document.getElementById("firstNameErrorMsg");
@@ -143,5 +154,138 @@ function validate(){
     nameError.setAttribute("aria-hidden", false);
     nameError.setAttribute("aria-invalid", true);
   }
+
+  const lastName = document.getElementById("lastName").value.trim();
+  const lastNameField = document.getElementById("lastName");
+  console.log(lastNameField);
+  const lastNameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s-]{2,}$/; // Accepts letters, spaces, and hyphens, at least 2 characters
+  const lastNameError = document.getElementById("lastNameErrorMsg");
+
+  if (!lastNameRegex.test(lastName) || !lastNameField.value) {
+    lastNameError.innerHTML = "Please enter a valid last name";
+    lastNameError.classList.add("visible");
+    lastNameError.setAttribute("aria-hidden", false);
+    lastNameError.setAttribute("aria-invalid", true);
+    lastNameField.classList.add("invalid");
+    return false;
+  } else {
+    lastNameField.classList.add("validate");
+    lastNameError.innerHTML = "confirmer";
+  }
+
+  // Validate address
+  const address = document.getElementById("address").value.trim();
+  const addressField = document.getElementById("address");
+  const addressRegex = /^[A-Za-z0-9À-ÖØ-öø-ÿ\s-]{2,}$/; // Accepts letters, numbers, spaces, and hyphens, at least 2 characters
+  const addressError = document.getElementById("addressErrorMsg");
+
+  if (!addressRegex.test(address) || !addressField.value) {
+    addressError.innerHTML = "Please enter a valid address";
+    addressError.classList.add("visible");
+    addressError.setAttribute("aria-hidden", false);
+    addressError.setAttribute("aria-invalid", true);
+    addressField.classList.add("invalid");
+    return false;
+  } else {
+    addressField.classList.add("validate");
+    addressError.innerHTML = "confirmer";
+  }
+
+  // Validate city
+  const city = document.getElementById("city").value.trim();
+  const cityField = document.getElementById("city");
+  const cityRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s-]{2,}$/; // Accepts letters, spaces, and hyphens, at least 2 characters
+  const cityError = document.getElementById("cityErrorMsg");
+
+  if (!cityRegex.test(city) || !cityField.value) {
+    cityError.innerHTML = "Please enter a valid city";
+    cityError.classList.add("visible");
+    cityError.setAttribute("aria-hidden", false);
+    cityError.setAttribute("aria-invalid", true);
+    cityField.classList.add("invalid");
+    return false;
+  } else {
+    cityField.classList.add("validate");
+    cityError.innerHTML = "confirmer";
+  }
+
+  const email = document.getElementById("email").value.trim();
+
+  const emailFiled = document.getElementById("email");
+  console.log(emailFiled);
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Accepts a valid email address
+  console.log(emailRegex.test(email));
+  const emailError = document.getElementById("emailErrorMsg");
+
+  if (!emailRegex.test(email) || !emailFiled.value) {
+    emailError.innerHTML = "Please enter a valid email address";
+    emailError.classList.add("visible");
+    emailError.setAttribute("aria-hidden", false);
+    emailError.setAttribute("aria-invalid", true);
+    emailFiled.classList.add("invalid");
+    return false;
+  } else {
+    emailFiled.classList.add("validate");
+    emailError.innerHTML = "confirmer";
+  }
+  if (
+    lastNameRegex.test(lastName) &&
+    addressRegex.test(address) &&
+    cityRegex.test(city) &&
+    emailRegex.test(email)
+  ) {
+    const order = {
+      contact: {
+        firstName: firstName.value,
+        lastName: lastName,
+        address: address,
+        city: city,
+        email: email,
+      },
+      products: [],
+    };
+    cart.items.forEach((it) => order.products.push(it.id));
+    console.log(order.contact);
+    localStorage.setItem("formData", JSON.stringify(order));
+    console.log(order.contact.email);
+
+    //Send a POST request to the server to create the order
+    fetch("http://localhost:3000/api/products/order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(order),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        generateOrderId(order.contact.email, order.products)
+        .then((orderId) => {
+          console.log(orderId); 
+     // Redirect to the confirmation page with the orderId
+          window.location.href = `confirmation.html?orderId=${orderId}`;
+            })
+  .catch((error) => {
+    console.error(error);
+          });
+       
+       
+      })
+      .catch((error) => console.error(error));
+  }
+
   return valid;
+}
+
+
+
+async function generateOrderId(email, products) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(email + JSON.stringify(products));
+  console.log("mydata", data);
+  const hash = await crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(hash))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
 }

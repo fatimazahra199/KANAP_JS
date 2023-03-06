@@ -16,3 +16,8 @@
     padding: 30px;
     border-radius: 25px;
 }
+.confirmation p span {
+    padding: .4rem;
+    font-weight: 600;
+    /* background: rgb(221, 52, 52); */
+}
