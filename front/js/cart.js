@@ -260,15 +260,15 @@ function validate() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        generateOrderId(order.contact.email, order.products)
-        .then((orderId) => {
-          console.log(orderId); 
-     // Redirect to the confirmation page with the orderId
-          window.location.href = `confirmation.html?orderId=${orderId}`;
-            })
-  .catch((error) => {
-    console.error(error);
-          });
+        // generateOrderId(order.contact.email, order.products)
+    //     .then((orderId) => {
+    //       console.log(orderId); 
+    //  // Redirect to the confirmation page with the orderId
+          window.location.href = `confirmation.html?orderId=${data.orderId}`;
+  //           })
+  // .catch((error) => {
+  //   console.error(error);
+  //         });
        
        
       })
